@@ -10,8 +10,6 @@ permissions:
   pages: write
   id-token: write
 
-# Never run two deploys at once, and let an in-flight one finish rather than
-# cancelling it — a cancelled deploy can leave the site on the previous build.
 concurrency:
   group: pages
   cancel-in-progress: false
@@ -19,13 +17,17 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
       - uses: actions/upload-pages-artifact@v3
         with:
